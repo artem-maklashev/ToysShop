@@ -6,30 +6,30 @@ import java.util.PriorityQueue;
 public class Generator {
 
     private float totalWeight;
-    private PriorityQueue<Toys> toys = new PriorityQueue<>();
+    private PriorityQueue<Toy> toys = new PriorityQueue<>();
 
-    Generator(PriorityQueue<Toys> toys) {
+    Generator(PriorityQueue<Toy> toys) {
         this.toys = toys;
     }
 
     public void setTotalWeight() {
         totalWeight = 0;
-        for (Toys toy : this.toys) {
+        for (Toy toy : this.toys) {
             totalWeight += toy.getWeight();
         }
         this.totalWeight = totalWeight;
     }
 
-    public Toys getToy() {
-        Toys toy = null;
+    public Toy getToy() {
+        Toy toy = null;
         int randomIndex = -1;
         int random = (int) (Math.random() * this.totalWeight);
-        PriorityQueue<Toys> temp = this.toys;
+        PriorityQueue<Toy> temp = this.toys;
         for (int i = 0; i < this.toys.size(); i++) {
             random -= Objects.requireNonNull(temp.poll()).getWeight();
             if (random <= 0) {
                 randomIndex = i;
-                PriorityQueue<Toys> temp2 = this.toys;
+                PriorityQueue<Toy> temp2 = this.toys;
                 for (int j = 0; j <=randomIndex;
                 j++){
                     toy = temp2.poll();

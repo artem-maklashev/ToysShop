@@ -1,12 +1,13 @@
 package model;
 
-public class Toys extends Comparable<> {
+public class Toy implements Comparable<Toy> {
+    private int idCounter = 1;
     private int id;
     private String name;
-    private float weight;
+    private int weight;
 
-    public Toys(int id, String name, float weight) {
-        this.id = id;
+    public Toy(String name, int weight) {
+        this.id = idCounter++;
         this.name = name;
         this.weight = weight;
     }
@@ -19,15 +20,11 @@ public class Toys extends Comparable<> {
         return name;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 
@@ -36,7 +33,7 @@ public class Toys extends Comparable<> {
     }
 
     @Override
-    public int compareTo(Object o) {
-        return (int) (((Toys) o).getWeight() - this.getWeight());
+    public int compareTo(Toy o) {
+        return (o.getId()-this.getId());
     }
 }
