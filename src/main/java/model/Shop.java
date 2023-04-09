@@ -1,21 +1,54 @@
 package model;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Shop {
+    private Map<Integer, Toy> toyMap;
 
-    private Set<Toy> toys;
-
-    public Shop(Set<Toy> toys) {
-        this.toys = new TreeSet<Toy>();
+    public Shop() {
+        this.toyMap = new HashMap<Integer, Toy>();
     }
 
-    public void addToy(Toy toy){
-        this.toys.add(toy);
+    public void addToy(Toy toy) {
+        this.toyMap.put(toy.getId(), toy);
     }
 
-    public void removeToy(int index){
-        this.toys.removeIf(toy -> toy.getId()== index);
+    public void removeToy(int index) {
+        this.toyMap.remove(index);
     }
+
+    public void changeWeight(int index, float newWeight) {
+        if (toyMap.containsKey(index)) {
+            Toy t = toyMap.get(index);
+            t.setWeight(newWeight);
+        }
+    }
+
+    public Toy getPrizeToy() {
+        Random random = new Random();
+        float totalWeight = 0.0f;
+        Toy prizeToy = null;
+
+        for (Toy toy : toyMap.values()) {
+            float weight = toy.getWeight();
+            totalWeight += weight;
+            if (prizeToy == null && random.nextFloat() <= weight / totalWeight) {
+                prizeToy = toy;
+            }
+        }
+        return prizeToy;
+    }
+
+    public Set<Toy> getPrizeSet(int quantity) {
+        Set<Toy> toySet = new HashSet<>();
+        for (int i = 0; i < quantity; i++) {
+
+            Toy prizeToy = getPrizeToy();
+            if (prizeToy != null) {
+                toySet.add(prizeToy);
+            }
+        }
+        return toySet;
+    }
+
 }

@@ -1,12 +1,12 @@
 package model;
 
 public class Toy implements Comparable<Toy> {
-    private int idCounter = 1;
-    private int id;
+    private static int idCounter = 1;
+    private final int id;
     private String name;
-    private int weight;
+    private float weight;
 
-    public Toy(String name, int weight) {
+    public Toy(String name, float weight) {
         this.id = idCounter++;
         this.name = name;
         this.weight = weight;
@@ -24,7 +24,7 @@ public class Toy implements Comparable<Toy> {
         this.name = name;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 
@@ -34,6 +34,6 @@ public class Toy implements Comparable<Toy> {
 
     @Override
     public int compareTo(Toy o) {
-        return (o.getId()-this.getId());
+        return this.getId() - o.getId();
     }
 }
