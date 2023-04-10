@@ -51,4 +51,7 @@ public class Shop {
         return toySet;
     }
 
+    public List<Toy> getToys() {
+        return new ArrayList<>(this.toyMap.values());
+    }
 }

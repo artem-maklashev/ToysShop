@@ -9,7 +9,7 @@ public class ChangeWeight extends MenuMethod{
 
     @Override
     public String description() {
-        return null;
+        return "Изменить вес игрушки";
     }
 
     @Override

@@ -11,4 +11,5 @@ public interface View {
     void start();
     void exit();
     void message(String str);
+    void takePrizeToys();
 }
