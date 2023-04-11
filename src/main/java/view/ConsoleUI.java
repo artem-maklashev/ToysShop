@@ -80,9 +80,19 @@ public class ConsoleUI implements View{
     }
 
     @Override
-    public void takePrizeToys() {
-
+    public void playPrizes() {
+        message("Введите количество игрушек для розыгрыша");
+        int quantity = 0;
+        if (s.hasNextInt()) {
+            quantity = s.nextInt();
+        } else {
+            message("Введено не целое число. Попробуйте еще раз");
+            return;
+        }
+        this.presenter.addToy(name, weight);
+        s.skip(".*\n");
     }
+
 
     public String scan(String message){
         message(message);
