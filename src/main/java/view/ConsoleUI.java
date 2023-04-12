@@ -89,7 +89,7 @@ public class ConsoleUI implements View{
             message("Введено не целое число. Попробуйте еще раз");
             return;
         }
-        this.presenter.addToy(name, weight);
+        this.presenter.playPrizes(quantity);
         s.skip(".*\n");
     }
 

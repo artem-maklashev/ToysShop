@@ -1,5 +1,9 @@
 package model;
 
+import model.data.DataIO;
+import model.data.JsonFormatter;
+
+import java.io.IOException;
 import java.util.*;
 
 public class Shop {
@@ -39,19 +43,30 @@ public class Shop {
         return prizeToy;
     }
 
-    public Set<Toy> getPrizeSet(int quantity) {
-        Set<Toy> toySet = new HashSet<>();
+    public Queue<Toy> getPrizeSet(int quantity) {
+        Queue<Toy> toeQueue = new LinkedList<>();
         for (int i = 0; i < quantity; i++) {
 
             Toy prizeToy = getPrizeToy();
             if (prizeToy != null) {
-                toySet.add(prizeToy);
+                toeQueue.add(prizeToy);
             }
         }
-        return toySet;
+        return toeQueue;
     }
 
     public List<Toy> getToys() {
         return new ArrayList<>(this.toyMap.values());
+    }
+
+    public Shop loadShop(DataIO dataIO){
+        String data = dataIO.loadData();
+        JsonFormatter formatter = new JsonFormatter();
+        return formatter.parseIn(data);
+    }
+
+    public void saveShop(DataIO dataIO) throws IOException {
+        JsonFormatter formatter = new JsonFormatter();
+        dataIO.saveData(formatter.parseOut(this));
     }
 }

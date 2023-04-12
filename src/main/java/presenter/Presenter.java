@@ -2,17 +2,21 @@ package presenter;
 
 import model.Shop;
 import model.Toy;
+import model.data.DataIO;
 import view.View;
 import view.menu.menuItems.ShowToys;
 
 import java.util.List;
+import java.util.Set;
 
 public class Presenter {
     View view;
     Shop shop;
-    public Presenter(View view, Shop shop) {
+    DataIO dataIO;
+    public Presenter(View view, Shop shop, DataIO dataIO) {
         this.view = view;
         this.shop = shop;
+        this.dataIO = dataIO;
     }
 
 
@@ -31,5 +35,10 @@ public class Presenter {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public void playPrizes(int quantity) {
+        Set<Toy> prizes = this.shop.getPrizeSet(quantity);
+
     }
 }
