@@ -5,6 +5,7 @@ import view.menu.Menu;
 import presenter.Presenter;
 import view.menu.menuItems.*;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class ConsoleUI implements View{
@@ -63,7 +64,7 @@ public class ConsoleUI implements View{
         menu.addItem(new PlayPrizes(this));
         menu.addItem(new Exit(this));
         while (isRun){
-            System.out.println("Выберите пункт меню:");
+//            System.out.println("Выберите пункт меню:");
             menu.printMenu();
             int selection = Integer.parseInt(scan("Выберите пункт меню: "));
             menu.getItem(selection).run();
@@ -72,6 +73,11 @@ public class ConsoleUI implements View{
 
     @Override
     public void exit() {
+        try {
+            this.presenter.saveShop();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         this.isRun = false;
     }
 

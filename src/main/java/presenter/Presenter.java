@@ -6,6 +6,7 @@ import model.data.DataIO;
 import view.View;
 import view.menu.menuItems.ShowToys;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -42,5 +43,9 @@ public class Presenter {
     public void playPrizes(int quantity) {
         PriorityQueue<Toy> prizes = this.shop.getPrizeSet(quantity);
 
+    }
+
+    public void saveShop() throws IOException {
+        this.shop.saveShop(this.dataIO);
     }
 }
