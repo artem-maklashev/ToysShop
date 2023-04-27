@@ -2,7 +2,7 @@ package model.data;
 
 import model.Shop;
 import com.google.gson.Gson;
-public class JsonFormatter {
+public class JsonFormatter implements Formatter{
     public String parseOut(Shop shop){
         Gson gson = new Gson();
         return gson.toJson(shop);

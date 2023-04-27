@@ -1,6 +1,6 @@
 package view;
 
-import model.Toy;
+
 import view.menu.Menu;
 import presenter.Presenter;
 import view.menu.menuItems.*;
@@ -60,6 +60,7 @@ public class ConsoleUI implements View{
         menu.addItem(new AddToy(this));
         menu.addItem(new ChangeWeight(this));
         menu.addItem((new RemoveToy(this)));
+        menu.addItem(new PlayPrizes(this));
         menu.addItem(new Exit(this));
         while (isRun){
             System.out.println("Выберите пункт меню:");
@@ -82,7 +83,7 @@ public class ConsoleUI implements View{
     @Override
     public void playPrizes() {
         message("Введите количество игрушек для розыгрыша");
-        int quantity = 0;
+        int quantity;
         if (s.hasNextInt()) {
             quantity = s.nextInt();
         } else {

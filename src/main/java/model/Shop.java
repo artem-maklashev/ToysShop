@@ -43,8 +43,8 @@ public class Shop {
         return prizeToy;
     }
 
-    public Queue<Toy> getPrizeSet(int quantity) {
-        Queue<Toy> toeQueue = new LinkedList<>();
+    public PriorityQueue<Toy> getPrizeSet(int quantity) {
+        PriorityQueue<Toy> toeQueue = new PriorityQueue<>();
         for (int i = 0; i < quantity; i++) {
 
             Toy prizeToy = getPrizeToy();
@@ -60,13 +60,12 @@ public class Shop {
     }
 
     public Shop loadShop(DataIO dataIO){
-        String data = dataIO.loadData();
-        JsonFormatter formatter = new JsonFormatter();
-        return formatter.parseIn(data);
+//        String data = dataIO.loadData();
+//        JsonFormatter formatter = new JsonFormatter();
+        return dataIO.loadData();
     }
 
     public void saveShop(DataIO dataIO) throws IOException {
-        JsonFormatter formatter = new JsonFormatter();
-        dataIO.saveData(formatter.parseOut(this));
+        dataIO.saveData(this);
     }
 }

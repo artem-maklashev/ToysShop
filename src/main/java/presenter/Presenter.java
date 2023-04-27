@@ -7,6 +7,8 @@ import view.View;
 import view.menu.menuItems.ShowToys;
 
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 
 public class Presenter {
@@ -15,8 +17,8 @@ public class Presenter {
     DataIO dataIO;
     public Presenter(View view, Shop shop, DataIO dataIO) {
         this.view = view;
-        this.shop = shop;
         this.dataIO = dataIO;
+        this.shop = shop.loadShop(dataIO);
     }
 
 
@@ -38,7 +40,7 @@ public class Presenter {
     }
 
     public void playPrizes(int quantity) {
-        Set<Toy> prizes = this.shop.getPrizeSet(quantity);
+        PriorityQueue<Toy> prizes = this.shop.getPrizeSet(quantity);
 
     }
 }

@@ -34,6 +34,19 @@ public class Toy implements Comparable<Toy> {
 
     @Override
     public int compareTo(Toy o) {
-        return this.getId() - o.getId();
+        // Сравнение по id
+        int result = Integer.compare(this.id, o.getId());
+        if (result != 0) {
+            return result;
+        }
+
+        // Если id совпадает сравниваем по названию
+        result = this.name.compareTo(o.getName());
+        if (result != 0) {
+            return result;
+        }
+
+        // Если названия совпадают сравниваем во весу
+        return Float.compare(this.weight, o.getWeight());
     }
 }

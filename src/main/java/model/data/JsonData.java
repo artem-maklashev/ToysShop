@@ -1,31 +1,38 @@
 package model.data;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
+import model.Shop;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-public class JsonData implements DataIO{
-    private final String FILE_PATH = "shop.json";
+public class JsonData implements DataIO {
+    private static final String FILE_PATH = "shop.json";
+    private static final Formatter formatter = new JsonFormatter();
+
     @Override
-    public String loadData() {
-        StringBuilder sb = null;
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
-            sb = new StringBuilder();
-            String s;
-            while ((s = br.readLine()) != null) {
-                sb.append(s);
+    public Shop loadData() {
+        try {
+            String data = Files.readString(Paths.get(FILE_PATH));
+            if (data.isEmpty()) {
+                return new Shop();
+            } else {
+                return formatter.parseIn(data);
             }
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println(ex.getMessage());
+            return new Shop();
         }
-        return sb.toString();
     }
 
     @Override
-    public void saveData(String data) throws IOException {
-        try (FileWriter writer = new FileWriter(FILE_PATH)) {
-            writer.write(data);
-        }
+    public void saveData(Shop shop) throws IOException {
+        String data = formatter.parseOut(shop);
+        Files.writeString(Path.of(FILE_PATH), data);
+    }
+
+    @Override
+    public void saveData(String data, String pathFile) throws IOException {
+        Files.writeString(Path.of(pathFile), data);
     }
 }
