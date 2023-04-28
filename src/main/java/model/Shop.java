@@ -7,10 +7,14 @@ import java.io.IOException;
 import java.util.*;
 
 public class Shop {
+
     private Map<Integer, Toy> toyMap;
 
     public Shop() {
         this.toyMap = new HashMap<Integer, Toy>();
+    }
+    public Map<Integer, Toy> getToyMap() {
+        return toyMap;
     }
 
     public void addToy(Toy toy) {
@@ -21,7 +25,7 @@ public class Shop {
         this.toyMap.remove(index);
     }
 
-    public void changeWeight(int index, float newWeight) {
+    public void changeWeight(int index, int newWeight) {
         if (toyMap.containsKey(index)) {
             Toy t = toyMap.get(index);
             t.setWeight(newWeight);
@@ -30,21 +34,26 @@ public class Shop {
 
     public Toy getPrizeToy() {
         Random random = new Random();
-        float totalWeight = 0.0f;
+        int totalWeight = 0;
+        for (Toy toy : toyMap.values()){
+            totalWeight += toy.getWeight();
+        }
         Toy prizeToy = null;
-
+        float randomNumber = random.nextInt(totalWeight);
+        float currentWeight = 0;
         for (Toy toy : toyMap.values()) {
             float weight = toy.getWeight();
-            totalWeight += weight;
-            if (prizeToy == null && random.nextFloat() <= weight / totalWeight) {
+            currentWeight += weight;
+            if (randomNumber < currentWeight) {
                 prizeToy = toy;
+                break; // Exit the loop early once the prizeToy is found
             }
         }
         return prizeToy;
     }
 
-    public PriorityQueue<Toy> getPrizeSet(int quantity) {
-        PriorityQueue<Toy> toeQueue = new PriorityQueue<>();
+    public Queue<Toy> getPrizeSet(int quantity) {
+        Queue<Toy> toeQueue = new LinkedList<>();
         for (int i = 0; i < quantity; i++) {
 
             Toy prizeToy = getPrizeToy();
@@ -67,5 +76,9 @@ public class Shop {
 
     public void saveShop(DataIO dataIO) throws IOException {
         dataIO.saveData(this);
+    }
+
+    public int getSize() {
+        return toyMap.size();
     }
 }

@@ -4,9 +4,9 @@ public class Toy implements Comparable<Toy> {
     private static int idCounter = 1;
     private final int id;
     private String name;
-    private float weight;
+    private int weight;
 
-    public Toy(String name, float weight) {
+    public Toy(String name, int weight) {
         this.id = idCounter++;
         this.name = name;
         this.weight = weight;
@@ -24,11 +24,11 @@ public class Toy implements Comparable<Toy> {
         this.name = name;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 
-    public float getWeight() {
+    public int getWeight() {
         return weight;
     }
 

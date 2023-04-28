@@ -3,6 +3,8 @@ package view.menu.menuItems;
 import view.View;
 import view.menu.MenuItem;
 
+import java.io.IOException;
+
 public class PlayPrizes extends MenuMethod {
 
     public PlayPrizes(View view) {
@@ -15,7 +17,7 @@ public class PlayPrizes extends MenuMethod {
     }
 
     @Override
-    public void run() {
+    public void run() throws IOException {
         getView().playPrizes();
     }
 }

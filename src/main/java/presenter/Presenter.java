@@ -4,15 +4,12 @@ import model.Shop;
 import model.Toy;
 import model.data.DataIO;
 import view.View;
-import view.menu.menuItems.ShowToys;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class Presenter {
+    private static final String PRIZES_PATH = "prizes.txt";
     View view;
     Shop shop;
     DataIO dataIO;
@@ -23,7 +20,7 @@ public class Presenter {
     }
 
 
-    public void addToy(String name, float weight) {
+    public void addToy(String name, int weight) {
         Toy toy = new Toy(name, weight);
         this.shop.addToy(toy);
     }
@@ -40,12 +37,31 @@ public class Presenter {
         return sb.toString();
     }
 
-    public void playPrizes(int quantity) {
-        PriorityQueue<Toy> prizes = this.shop.getPrizeSet(quantity);
-
+    public Queue<Toy> playPrizes(int quantity) {
+        return this.shop.getPrizeSet(quantity);
     }
 
     public void saveShop() throws IOException {
         this.shop.saveShop(this.dataIO);
+    }
+
+    public int getShopSize() {
+        return this.shop.getSize();
+    }
+
+    public void removeToy(int index) {
+        this.shop.removeToy(index);
+    }
+
+    public int getWeight(int index) {
+        return this.shop.getToyMap().get(index).getWeight();
+    }
+
+    public void updateWeight(int index, int newWeight) {
+        this.shop.changeWeight(index, newWeight);
+    }
+
+    public void savePrizes(LinkedList<String> name) throws IOException {
+        this.dataIO.saveData(name, PRIZES_PATH);
     }
 }

@@ -1,10 +1,14 @@
 package model.data;
 
 import model.Shop;
+import model.Toy;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class JsonData implements DataIO {
     private static final String FILE_PATH = "shop.json";
@@ -32,7 +36,7 @@ public class JsonData implements DataIO {
     }
 
     @Override
-    public void saveData(String data, String pathFile) throws IOException {
-        Files.writeString(Path.of(pathFile), data);
+    public void saveData(LinkedList<String> data, String pathFile) throws IOException {
+        Files.write(Paths.get(pathFile), data);
     }
 }

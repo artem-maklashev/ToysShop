@@ -1,11 +1,14 @@
 package view;
 
 
+import model.Toy;
 import view.menu.Menu;
 import presenter.Presenter;
 import view.menu.menuItems.*;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class ConsoleUI implements View{
@@ -33,29 +36,61 @@ public class ConsoleUI implements View{
     public void addToy() {
         String name = scan("Введите наименование игрушки: ");
         message("Введите вес игрушки для розыгрыша:");
-        float weight;
-        if (s.hasNextFloat()) {
-            weight = s.nextFloat();
-        } else {
-            message("Введено не число. Попробуйте еще раз");
-            return;
-        }
-        this.presenter.addToy(name, weight);
-        s.skip(".*\n");
+        int weight = inputWeight();
+        if (weight > 0) this.presenter.addToy(name, weight);
     }
 
     @Override
     public void removeToy() {
+        message("Введите номер игрушки для удаления ");
+        int index  = selectIndex();
+        if (index >= 0) this.presenter.removeToy(index);
+    }
 
+    public int selectIndex(){
+        int index = -1;
+        if (s.hasNextInt()){
+            index = s.nextInt();
+            int shopSize = presenter.getShopSize();
+            if (index > shopSize) {
+                message("Игрушки с таким номером нет в магазине");
+            } else if (index <=0) {
+                return -1;
+            } else {
+                index -= 1;
+            }
+        } else {
+            message("Номер должен быть целым числом.");
+        }
+        return index;
     }
 
     @Override
     public void changeWeight() {
+        message("Введите номер игрушки для изменения веса в розыгрыше");
+        int index = selectIndex();
+        if (index >=0) {
+            int oldWeight = this.presenter.getWeight(index);
+            message(String.format("Изменить вес игрушки с %s на", oldWeight));
+            int newWeight = inputWeight();
+            if (newWeight > 0) this.presenter.updateWeight(index, newWeight);
+        }
+    }
 
+    public int inputWeight() {
+        int weight;
+        if (s.hasNextFloat()) {
+            weight = s.nextInt();
+        } else {
+            message("Введено не число. Попробуйте еще раз");
+            return 0;
+        }
+        s.skip(".*\n");
+        return weight;
     }
 
     @Override
-    public void start() {
+    public void start() throws IOException {
         Menu menu = new Menu(this);
         menu.addItem(new ShowToys(this));
         menu.addItem(new AddToy(this));
@@ -87,17 +122,29 @@ public class ConsoleUI implements View{
     }
 
     @Override
-    public void playPrizes() {
+    public void playPrizes() throws IOException {
         message("Введите количество игрушек для розыгрыша");
         int quantity;
         if (s.hasNextInt()) {
             quantity = s.nextInt();
+            Queue<Toy> prizes =this.presenter.playPrizes(quantity);
+            LinkedList<String> names = new LinkedList<>();
+            for (int i = 0; i < quantity; i++) {
+                message(String.format("Для розыгрышша %d игрушки нажмите любую клавишу", i+1));
+                s.nextLine();
+                Toy toy = prizes.poll();
+                String name = toy.getName();
+                names.add(name);
+
+            }
+            this.presenter.savePrizes(names);
         } else {
             message("Введено не целое число. Попробуйте еще раз");
             return;
         }
-        this.presenter.playPrizes(quantity);
         s.skip(".*\n");
+
+
     }
 
 
