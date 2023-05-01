@@ -1,6 +1,8 @@
 package model;
 
 public class Toy implements Comparable<Toy> {
+
+
     private static int idCounter = 1;
     private final int id;
     private String name;
@@ -10,6 +12,9 @@ public class Toy implements Comparable<Toy> {
         this.id = idCounter++;
         this.name = name;
         this.weight = weight;
+    }
+    public static void setIdCounter(int idCounter) {
+        Toy.idCounter = idCounter;
     }
 
     public int getId() {
@@ -34,19 +39,19 @@ public class Toy implements Comparable<Toy> {
 
     @Override
     public int compareTo(Toy o) {
-        // Сравнение по id
-        int result = Integer.compare(this.id, o.getId());
-        if (result != 0) {
-            return result;
-        }
-
-        // Если id совпадает сравниваем по названию
-        result = this.name.compareTo(o.getName());
-        if (result != 0) {
-            return result;
-        }
+//        // Сравнение по id
+//        int result = Integer.compare(this.id, o.getId());
+//        if (result != 0) {
+//            return result;
+//        }
+//
+//        // Если id совпадает сравниваем по названию
+//        result = this.name.compareTo(o.getName());
+//        if (result != 0) {
+//            return result;
+//        }
 
         // Если названия совпадают сравниваем во весу
-        return Float.compare(this.weight, o.getWeight());
+        return Integer.compare(this.weight, o.getWeight());
     }
 }

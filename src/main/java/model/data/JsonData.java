@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
-import java.util.Queue;
+
 
 public class JsonData implements DataIO {
     private static final String FILE_PATH = "shop.json";

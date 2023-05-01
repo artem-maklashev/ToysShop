@@ -21,8 +21,7 @@ public class Presenter {
 
 
     public void addToy(String name, int weight) {
-        Toy toy = new Toy(name, weight);
-        this.shop.addToy(toy);
+        this.shop.addToy(name, weight);
     }
 
     public String getToys() {
@@ -30,7 +29,7 @@ public class Presenter {
         StringBuilder sb = new StringBuilder();
         for (Toy toy: toys
              ) {
-            String item = String.format("%5d %30s %5.3f", toy.getId(), toy.getName(), toy.getWeight());
+            String item = String.format("%5d %30s %5d", toy.getId(), toy.getName(), toy.getWeight());
             sb.append(item);
             sb.append("\n");
         }

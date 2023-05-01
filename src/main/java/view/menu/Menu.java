@@ -34,4 +34,8 @@ public class Menu {
             count++;
         }
     }
+
+    public int getSize() {
+        return menuItems.size();
+    }
 }

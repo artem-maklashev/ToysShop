@@ -11,13 +11,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-public class ConsoleUI implements View{
+public class ConsoleUI implements View {
     private Presenter presenter;
     private boolean isRun = true;
 
     private Scanner s;
 
-    public ConsoleUI(){
+    public ConsoleUI() {
         s = new Scanner(System.in);
     }
 
@@ -43,21 +43,20 @@ public class ConsoleUI implements View{
     @Override
     public void removeToy() {
         message("Введите номер игрушки для удаления ");
-        int index  = selectIndex();
+        int index = selectIndex();
         if (index >= 0) this.presenter.removeToy(index);
     }
 
-    public int selectIndex(){
+    public int selectIndex() {
         int index = -1;
-        if (s.hasNextInt()){
+        if (s.hasNextInt()) {
             index = s.nextInt();
+            s.skip(".*\n");
             int shopSize = presenter.getShopSize();
             if (index > shopSize) {
                 message("Игрушки с таким номером нет в магазине");
-            } else if (index <=0) {
+            } else if (index <= 0) {
                 return -1;
-            } else {
-                index -= 1;
             }
         } else {
             message("Номер должен быть целым числом.");
@@ -69,7 +68,7 @@ public class ConsoleUI implements View{
     public void changeWeight() {
         message("Введите номер игрушки для изменения веса в розыгрыше");
         int index = selectIndex();
-        if (index >=0) {
+        if (index >= 0) {
             int oldWeight = this.presenter.getWeight(index);
             message(String.format("Изменить вес игрушки с %s на", oldWeight));
             int newWeight = inputWeight();
@@ -79,13 +78,13 @@ public class ConsoleUI implements View{
 
     public int inputWeight() {
         int weight;
-        if (s.hasNextFloat()) {
+        if (s.hasNextInt()) {
             weight = s.nextInt();
+            s.skip(".*\n");
         } else {
             message("Введено не число. Попробуйте еще раз");
             return 0;
         }
-        s.skip(".*\n");
         return weight;
     }
 
@@ -98,11 +97,20 @@ public class ConsoleUI implements View{
         menu.addItem((new RemoveToy(this)));
         menu.addItem(new PlayPrizes(this));
         menu.addItem(new Exit(this));
-        while (isRun){
-//            System.out.println("Выберите пункт меню:");
+        while (isRun) {
             menu.printMenu();
-            int selection = Integer.parseInt(scan("Выберите пункт меню: "));
-            menu.getItem(selection).run();
+            try {
+                int selection = Integer.parseInt(scan("Выберите пункт меню: "));
+                if (selection > 0 && selection <= menu.getSize()) {
+                    menu.getItem(selection).run();
+                }
+                else {
+                    message(String.format("Необходимо ввести число от 1 до %d", menu.getSize()));
+                }
+            } catch (NumberFormatException e) {
+                message("Введите число");
+            }
+
         }
     }
 
@@ -127,30 +135,24 @@ public class ConsoleUI implements View{
         int quantity;
         if (s.hasNextInt()) {
             quantity = s.nextInt();
-            Queue<Toy> prizes =this.presenter.playPrizes(quantity);
+            s.skip(".*\n");
+            Queue<Toy> prizes = this.presenter.playPrizes(quantity);
             LinkedList<String> names = new LinkedList<>();
             for (int i = 0; i < quantity; i++) {
-                message(String.format("Для розыгрышша %d игрушки нажмите любую клавишу", i+1));
-                s.nextLine();
                 Toy toy = prizes.poll();
                 String name = toy.getName();
                 names.add(name);
-
+                message(String.format("Приз %s", name));
             }
             this.presenter.savePrizes(names);
         } else {
             message("Введено не целое число. Попробуйте еще раз");
-            return;
         }
-        s.skip(".*\n");
-
-
     }
 
 
-    public String scan(String message){
+    public String scan(String message) {
         message(message);
-//        s.skip(".*\n");
         return s.nextLine();
     }
 

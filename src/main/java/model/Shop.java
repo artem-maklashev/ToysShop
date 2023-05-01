@@ -1,8 +1,6 @@
 package model;
 
 import model.data.DataIO;
-import model.data.JsonFormatter;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -17,7 +15,9 @@ public class Shop {
         return toyMap;
     }
 
-    public void addToy(Toy toy) {
+    public void addToy(String name, int weight) {
+        Toy.setIdCounter(this.getMaxId()+1);
+        Toy toy = new Toy(name, weight);
         this.toyMap.put(toy.getId(), toy);
     }
 
@@ -32,45 +32,50 @@ public class Shop {
         }
     }
 
-    public Toy getPrizeToy() {
-        Random random = new Random();
-        int totalWeight = 0;
-        for (Toy toy : toyMap.values()){
-            totalWeight += toy.getWeight();
-        }
-        Toy prizeToy = null;
-        float randomNumber = random.nextInt(totalWeight);
-        float currentWeight = 0;
-        for (Toy toy : toyMap.values()) {
-            float weight = toy.getWeight();
-            currentWeight += weight;
-            if (randomNumber < currentWeight) {
-                prizeToy = toy;
-                break; // Exit the loop early once the prizeToy is found
-            }
-        }
-        return prizeToy;
+    public int getMaxId(){
+        return toyMap.values().stream().mapToInt(Toy::getId).max().orElse(0);
     }
 
-    public Queue<Toy> getPrizeSet(int quantity) {
-        Queue<Toy> toeQueue = new LinkedList<>();
-        for (int i = 0; i < quantity; i++) {
-
-            Toy prizeToy = getPrizeToy();
-            if (prizeToy != null) {
-                toeQueue.add(prizeToy);
-            }
-        }
-        return toeQueue;
+  public Toy getPrizeToy() {
+    int totalWeight = toyMap.values().stream().mapToInt(Toy::getWeight).sum();
+    if (totalWeight <= 0) {
+        return null;
     }
+    Random random = new Random();
+    int randomNumber = random.nextInt(totalWeight);
+
+    double currentWeight = 0;
+      PriorityQueue<Toy> toyQueue = new PriorityQueue<Toy>();
+    toyQueue.addAll(toyMap.values());
+
+    for (Toy toy : toyQueue) {
+        currentWeight += toy.getWeight();
+        if (randomNumber < currentWeight) {
+            return toy;
+        }
+    }
+    return null;
+}
+
+
+public Queue<Toy> getPrizeSet(int quantity) {
+    Queue<Toy> toeQueue = new LinkedList<>();
+    for (int i = 0; i < quantity; i++) {
+        Toy prizeToy = getPrizeToy();
+        if (prizeToy != null) {
+            toeQueue.add(prizeToy);
+        }
+    }
+    return toeQueue;
+}
+
+
 
     public List<Toy> getToys() {
         return new ArrayList<>(this.toyMap.values());
     }
 
     public Shop loadShop(DataIO dataIO){
-//        String data = dataIO.loadData();
-//        JsonFormatter formatter = new JsonFormatter();
         return dataIO.loadData();
     }
 
